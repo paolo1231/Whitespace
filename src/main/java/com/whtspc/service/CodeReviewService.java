@@ -1,4 +1,4 @@
-package com.example.service;
+package com.whtspc.service;
 
 import io.quarkiverse.langchain4j.RegisterAiService;
 import dev.langchain4j.service.SystemMessage;

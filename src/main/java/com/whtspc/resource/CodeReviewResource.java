@@ -1,16 +1,15 @@
-package com.example.resource;
+package com.whtspc.resource;
 
-import com.example.model.CodeReviewRequest;
-import com.example.model.CodeReviewResponse;
-import com.example.service.CodeReviewService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.whtspc.model.CodeReviewRequest;
+import com.whtspc.model.CodeReviewResponse;
+import com.whtspc.service.CodeReviewService;
+
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import java.util.Optional;
 
 @Path("/review")
 @Produces(MediaType.APPLICATION_JSON)
@@ -31,10 +30,10 @@ public class CodeReviewResource {
     @POST
     public Response reviewCode(CodeReviewRequest request) {
         try {
-            String code = Optional.ofNullable(request)
-                    .map(CodeReviewRequest::getCode)
-                    .filter(c -> !c.trim().isEmpty())
-                    .orElseThrow(() -> new IllegalArgumentException("Empty code"));
+            if (request == null || request.getCode() == null || request.getCode().trim().isEmpty()) {
+                throw new IllegalArgumentException("Empty code");
+            }
+            String code = request.getCode();
 
             String aiResponse = codeReviewService.reviewCode(code);
             CodeReviewResponse response = objectMapper.readValue(aiResponse, CodeReviewResponse.class);
