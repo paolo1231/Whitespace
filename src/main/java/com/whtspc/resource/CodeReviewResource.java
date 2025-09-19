@@ -34,8 +34,9 @@ public class CodeReviewResource {
                 throw new IllegalArgumentException("Empty code");
             }
             String code = request.getCode();
+            String language = request.getLanguage() != null ? request.getLanguage() : "java";
 
-            String aiResponse = codeReviewService.reviewCode(code);
+            String aiResponse = codeReviewService.reviewCode(code, language);
             CodeReviewResponse response = objectMapper.readValue(aiResponse, CodeReviewResponse.class);
 
             return Response.ok(response).build();

@@ -64,6 +64,32 @@
             color: #1e293b;
         }
 
+        .language-selector {
+            margin-bottom: 1rem;
+        }
+
+        .language-selector label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .language-selector select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        .language-selector select:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
         #codeInput {
             width: 100%;
             height: 400px;
@@ -226,20 +252,26 @@
     <div class="container">
         <div class="header">
             <h1>Whitespace</h1>
-            <p>Analyze Java code with AI-powered insights and Tiger Style programming principles</p>
+            <p>Analyze code in multiple languages with AI-powered insights and Tiger Style programming principles</p>
         </div>
 
         <div class="main-content">
             <div class="input-section">
-                <h2 class="section-title">Java Code Input</h2>
-                <textarea id="codeInput" placeholder="Paste your Java code here...
-
-Example:
-public class Calculator {
-    public int add(int a, int b) {
-        return a + b;
-    }
-}"></textarea>
+                <h2 class="section-title">Code Input</h2>
+                <div class="language-selector">
+                    <label for="languageSelect">Programming Language:</label>
+                    <select id="languageSelect">
+                        <option value="java">Java</option>
+                        <option value="python">Python</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="typescript">TypeScript</option>
+                        <option value="csharp">C#</option>
+                        <option value="go">Go</option>
+                        <option value="rust">Rust</option>
+                        <option value="cpp">C++</option>
+                    </select>
+                </div>
+                <textarea id="codeInput" placeholder="Paste your code here..."></textarea>
                 <div class="button-group">
                     <button id="reviewBtn" class="btn btn-primary">Review Code</button>
                     <button id="clearBtn" class="btn btn-secondary">Clear</button>
@@ -254,7 +286,7 @@ public class Calculator {
                 <h2 class="section-title">Analysis Results</h2>
                 <div id="output">
                     <p style="color: #64748b; text-align: center; margin-top: 2rem;">
-                        Enter Java code and click "Review Code" to see the analysis results here.
+                        Enter code and click "Review Code" to see the analysis results here.
                     </p>
                 </div>
             </div>
@@ -263,16 +295,87 @@ public class Calculator {
 
     <script>
         const codeInput = document.getElementById('codeInput');
+        const languageSelect = document.getElementById('languageSelect');
         const reviewBtn = document.getElementById('reviewBtn');
         const clearBtn = document.getElementById('clearBtn');
         const loading = document.getElementById('loading');
         const output = document.getElementById('output');
 
+        // Language-specific examples and placeholders
+        const languageExamples = {
+            java: `public class Calculator {
+    public int add(int a, int b) {
+        return a + b;
+    }
+}`,
+            python: `def calculate_fibonacci(n):
+    if n <= 1:
+        return n
+    return calculate_fibonacci(n-1) + calculate_fibonacci(n-2)`,
+            javascript: `function fetchUserData(userId) {
+    return fetch(\`/api/users/\${userId}\`)
+        .then(response => response.json())
+        .catch(error => console.error(error));
+}`,
+            typescript: `interface User {
+    id: number;
+    name: string;
+    email: string;
+}
+
+function getUser(id: number): Promise<User> {
+    return fetch(\`/api/users/\${id}\`).then(res => res.json());
+}`,
+            csharp: `public class Calculator
+{
+    public int Add(int a, int b)
+    {
+        return a + b;
+    }
+}`,
+            go: `package main
+
+import "fmt"
+
+func fibonacci(n int) int {
+    if n <= 1 {
+        return n
+    }
+    return fibonacci(n-1) + fibonacci(n-2)
+}`,
+            rust: `fn fibonacci(n: u32) -> u32 {
+    match n {
+        0 => 0,
+        1 => 1,
+        _ => fibonacci(n - 1) + fibonacci(n - 2),
+    }
+}`,
+            cpp: `#include <iostream>
+
+class Calculator {
+public:
+    int add(int a, int b) {
+        return a + b;
+    }
+};`
+        };
+
+        // Update placeholder when language changes
+        languageSelect.addEventListener('change', () => {
+            const selectedLanguage = languageSelect.value;
+            const example = languageExamples[selectedLanguage];
+            codeInput.placeholder = `Paste your ${selectedLanguage.toUpperCase()} code here...\n\nExample:\n${example}`;
+        });
+
+        // Set initial placeholder
+        languageSelect.dispatchEvent(new Event('change'));
+
         reviewBtn.addEventListener('click', async () => {
             const code = codeInput.value.trim();
+            const language = languageSelect.value;
 
             if (!code) {
-                showError('Please enter some Java code to review.');
+                showError(`Please enter some ${language.toUpperCase()} code to review.`);
                 return;
             }
 
@@ -284,7 +387,7 @@ public class Calculator {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ code })
+                    body: JSON.stringify({ code, language })
                 });
 
                 if (!response.ok) {
@@ -304,7 +407,7 @@ public class Calculator {
 
         clearBtn.addEventListener('click', () => {
             codeInput.value = '';
-            output.innerHTML = '<p style="color: #64748b; text-align: center; margin-top: 2rem;">Enter Java code and click "Review Code" to see the analysis results here.</p>';
+            output.innerHTML = '<p style="color: #64748b; text-align: center; margin-top: 2rem;">Enter code and click "Review Code" to see the analysis results here.</p>';
         });
 
         function setLoading(isLoading) {
