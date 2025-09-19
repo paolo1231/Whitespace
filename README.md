@@ -156,18 +156,6 @@ docker build -t whitespace .
 docker run -p 8080:8080 -e OPENAI_API_KEY=your-key whitespace
 ```
 
-## Deployment
-
-Whitespace can be deployed to various platforms. See `DEPLOYMENT.md` for detailed instructions including:
-
-- **Defang.io** (Recommended) - Free tier with generous limits
-- **Railway.app** - $5 credits, auto-deployment from GitHub
-- **Render.com** - 750 hours/month free tier
-- **Heroku** - 550-1000 hours/month free tier
-- **Fly.io** - 3 VMs free tier
-
-All platforms support free deployment with just an OpenAI API key.
-
 ## Configuration
 
 Key configuration options in `application.properties`:
