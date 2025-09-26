@@ -19,7 +19,7 @@ public class CodeReviewResource {
     private static final String EMPTY_CODE_ERROR = "{\"error\": \"Code field is required and cannot be empty\"}";
     private static final String PROCESSING_ERROR = "{\"error\": \"Failed to process code review\"}";
     private static final String HEALTH_RESPONSE = "{\"status\": \"UP\", \"service\": \"Whitespace\"}";
-    private static final Object INVALID_RESPONSE_ERROR = "{\"error\": \"Invalid AI response format\"}";
+    private static final String INVALID_RESPONSE_ERROR = "{\"error\": \"Invalid AI response format\"}";
 
     @Inject
     CodeReviewService codeReviewService;
@@ -34,7 +34,7 @@ public class CodeReviewResource {
                 throw new IllegalArgumentException("Empty code");
             }
             String code = request.getCode();
-            String language = request.getLanguage() != null ? request.getLanguage() : "java";
+            String language = request.getLanguage();
 
             String aiResponse = codeReviewService.reviewCode(code, language);
             CodeReviewResponse response = objectMapper.readValue(aiResponse, CodeReviewResponse.class);
@@ -42,17 +42,14 @@ public class CodeReviewResource {
             return Response.ok(response).build();
 
         } catch (IllegalArgumentException e) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(EMPTY_CODE_ERROR)
-                    .build();
+            // Invalid input: missing or empty code
+            return buildErrorResponse(Response.Status.BAD_REQUEST, EMPTY_CODE_ERROR);
         } catch (JsonProcessingException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(INVALID_RESPONSE_ERROR)
-                    .build();
+            // AI response parsing failed: malformed JSON from AI service
+            return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, INVALID_RESPONSE_ERROR);
         } catch (RuntimeException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(PROCESSING_ERROR)
-                    .build();
+            // General processing error: AI service or other runtime issues
+            return buildErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, PROCESSING_ERROR);
         }
     }
 
@@ -60,5 +57,9 @@ public class CodeReviewResource {
     @Path("/health")
     public Response health() {
         return Response.ok(HEALTH_RESPONSE).build();
+    }
+
+    private Response buildErrorResponse(Response.Status status, String errorMessage) {
+        return Response.status(status).entity(errorMessage).build();
     }
 }
