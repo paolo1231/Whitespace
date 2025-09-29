@@ -4,14 +4,14 @@ FROM maven:3.8.7-openjdk-18-slim AS build
 COPY pom.xml /app/
 WORKDIR /app
 
-# Download dependencies (cached layer)
+# Download dependencies (cached layer - only rebuilds if pom.xml changes)
 RUN mvn dependency:go-offline -B
 
-# Copy source code
+# Copy source code (this layer rebuilds when code changes)
 COPY src /app/src
 
 # Build the application
-RUN mvn package -DskipTests
+RUN mvn package -DskipTests -q
 
 # Runtime stage
 FROM registry.access.redhat.com/ubi8/openjdk-17-runtime:1.18

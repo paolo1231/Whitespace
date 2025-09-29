@@ -195,9 +195,60 @@
             margin-bottom: 1rem;
         }
 
-        .output-content ul {
+        .output-content ul,
+        .output-content ol {
             margin-left: 1.5rem;
             margin-bottom: 1rem;
+            padding-left: 1rem;
+        }
+
+        .output-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .output-content ol {
+            list-style-type: decimal;
+        }
+
+        .output-content ul {
+            list-style-type: disc;
+        }
+
+        .output-content ol ol {
+            list-style-type: lower-alpha;
+            margin-top: 0.5rem;
+        }
+
+        .output-content ul ul {
+            list-style-type: circle;
+            margin-top: 0.5rem;
+        }
+
+        .output-content li p {
+            margin-bottom: 0.5rem;
+        }
+
+        .output-content li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Force line breaks for text that looks like lists */
+        .output-content p {
+            white-space: pre-line;
+        }
+
+        /* Handle manual numbered lists in paragraphs */
+        .output-content p {
+            line-height: 1.8;
+        }
+
+        /* Style for content that contains numbered items */
+        .output-content p:contains("1."),
+        .output-content p:contains("2."),
+        .output-content p:contains("3.") {
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .output-content code {
@@ -278,7 +329,7 @@
                 </div>
                 <div id="loading" class="loading">
                     <div class="spinner"></div>
-                    <span>Analyzing code...</span>
+                    <span id="loadingText">Analyzing code...</span>
                 </div>
             </div>
 
@@ -407,34 +458,66 @@ public:
 
         clearBtn.addEventListener('click', () => {
             codeInput.value = '';
-            output.innerHTML = '<p style="color: #64748b; text-align: center; margin-top: 2rem;">Enter code and click "Review Code" to see the analysis results here.</p>';
+            clearOutput();
         });
 
         function setLoading(isLoading) {
+            const loadingText = document.getElementById('loadingText');
             reviewBtn.disabled = isLoading;
+
+            if (isLoading) {
+                loadingText.textContent = 'Analyzing code... This may take up to 30 seconds.';
+            }
+
             loading.style.display = isLoading ? 'flex' : 'none';
         }
 
         function showError(message) {
+            // Provide helpful timeout guidance
+            if (message.includes('timeout') || message.includes('Failed to fetch')) {
+                message += '<br><br>💡 <strong>Tip:</strong> Complex code analysis can take up to 30 seconds. Please try again or simplify your code sample.';
+            }
             output.innerHTML = `<div class="error">${message}</div>`;
         }
 
         function displayResults(result) {
+            // Pre-process the content to ensure proper list formatting
+            const processedResult = {
+                explanation: formatContent(result.explanation),
+                issues: formatContent(result.issues),
+                suggestions: formatContent(result.suggestions),
+                tigerStyle: formatContent(result.tigerStyle)
+            };
+
             const markdown = `
 ### 📖 Code Explanation
-${result.explanation}
+${processedResult.explanation}
 
 ### 🐛 Issues Found
-${result.issues}
+${processedResult.issues}
 
 ### 💡 Suggestions
-${result.suggestions}
+${processedResult.suggestions}
 
 ### 🐅 Tiger Style Recommendations
-${result.tigerStyle}
+${processedResult.tigerStyle}
             `.trim();
 
-            const html = marked.parse(markdown);
+            let html = marked.parse(markdown);
+
+            // Fallback: Convert inline numbered lists to proper HTML if markdown didn't catch them
+            html = html.replace(/<p>([^<]*\d+\.\s+[^<]*(?:\d+\.\s+[^<]*)*)<\/p>/g, function (match, content) {
+                // Split by numbered items and create proper list
+                const items = content.split(/(?=\d+\.\s+)/).filter(item => item.trim());
+                if (items.length > 1) {
+                    const listItems = items.map(item => {
+                        const cleanItem = item.replace(/^\d+\.\s*/, '').trim();
+                        return `<li>${cleanItem}</li>`;
+                    }).join('');
+                    return `<ol>${listItems}</ol>`;
+                }
+                return match;
+            });
 
             // Add special styling for Tiger Style section
             const styledHtml = html.replace(
@@ -443,6 +526,71 @@ ${result.tigerStyle}
             );
 
             output.innerHTML = `<div class="output-content">${styledHtml}</div>`;
+        }
+
+        function formatContent(content) {
+            if (!content) return '';
+
+            // Handle both string and array formats
+            if (Array.isArray(content)) {
+                // Check if items already have numbering
+                const hasNumbering = content.some(item => /^\d+\.\s+/.test(item.trim()));
+                
+                if (hasNumbering) {
+                    // Items already numbered, just join them
+                    return content.join('\n\n');
+                } else {
+                    // Add numbering to unnumbered items
+                    return content.map((item, index) => `${index + 1}. ${item}`).join('\n\n');
+                }
+            }
+
+            // Handle string content (legacy format)
+            return formatListContent(content);
+        }
+
+        function formatListContent(content) {
+            if (!content) return content;
+
+            // Split content into lines and process each line
+            let lines = content.split(/\r?\n/);
+            let processedLines = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
+
+                // Check if line starts with a number followed by a period
+                if (/^\d+\.\s+/.test(line)) {
+                    // Ensure there's a blank line before the first item if it's not already there
+                    if (i > 0 && processedLines.length > 0 && processedLines[processedLines.length - 1] !== '') {
+                        processedLines.push('');
+                    }
+                    processedLines.push(line);
+                    // Add a blank line after each numbered item for proper markdown parsing
+                    if (i < lines.length - 1 && !/^\d+\.\s+/.test(lines[i + 1].trim())) {
+                        processedLines.push('');
+                    }
+                }
+                // Check if line starts with a bullet point
+                else if (/^[-*]\s+/.test(line)) {
+                    if (i > 0 && processedLines.length > 0 && processedLines[processedLines.length - 1] !== '') {
+                        processedLines.push('');
+                    }
+                    processedLines.push(line);
+                    if (i < lines.length - 1 && !/^[-*]\s+/.test(lines[i + 1].trim())) {
+                        processedLines.push('');
+                    }
+                }
+                else {
+                    processedLines.push(line);
+                }
+            }
+
+            return processedLines.join('\n');
+        }
+
+        function clearOutput() {
+            output.innerHTML = '<p style="color: #64748b; text-align: center; margin-top: 2rem;">Enter code and click "Review Code" to see the analysis results here.</p>';
         }
 
         // Allow Ctrl+Enter to submit

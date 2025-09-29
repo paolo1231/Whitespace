@@ -1,40 +1,18 @@
 package com.whtspc.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CodeReviewRequest {
-
-    @JsonProperty("code")
-    private String code;
-
-    @JsonProperty("language")
-    private String language = "java"; // Default to Java for backward compatibility
-
-    public CodeReviewRequest() {
+public record CodeReviewRequest(String code, String language) {
+    
+    @JsonCreator
+    public static CodeReviewRequest create(
+            @JsonProperty("code") String code,
+            @JsonProperty("language") String language) {
+        return new CodeReviewRequest(code, language != null ? language : "java");
     }
-
+    
     public CodeReviewRequest(String code) {
-        this.code = code;
-    }
-
-    public CodeReviewRequest(String code, String language) {
-        this.code = code;
-        this.language = language;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
+        this(code, "java");
     }
 }

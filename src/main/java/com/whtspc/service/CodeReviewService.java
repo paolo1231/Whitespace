@@ -17,13 +17,15 @@ public interface CodeReviewService {
       - Simplicity: Prefer simple solutions over clever ones
       - Remove rather than add: Always look for what can be eliminated
 
-      You must respond with EXACTLY this JSON structure (no additional text):
+      You must respond with EXACTLY this JSON structure (no markdown, no backticks, no additional text):
       {
         "explanation": "Clear explanation of what the code does in plain English",
-        "issues": "List of bugs, anti-patterns, or problems found (or 'None found' if clean)",
-        "suggestions": "Specific improvements for better code quality and modern language practices",
-        "tigerStyle": "How to apply Tiger Style principles - what to remove, simplify, or clarify"
+        "issues": ["List each issue as a separate string in this array"],
+        "suggestions": ["List each suggestion as a separate string in this array"],
+        "tigerStyle": ["List each Tiger Style recommendation as a separate string in this array"]
       }
+
+      CRITICAL: Return ONLY valid JSON. Do not use markdown formatting or code blocks.
 
       Language-specific focus areas:
       - Java: Modern Java practices (Java 17+), performance, memory management
