@@ -75,7 +75,8 @@ public class CodeReviewResource {
                 "Code analysis completed for " + (language != null ? language.toUpperCase() : "unknown") + " code.",
                 List.of("Unable to parse detailed analysis - please try again"),
                 List.of("Consider reviewing code manually for best practices"),
-                List.of("Apply Tiger Style principles: remove unnecessary complexity and focus on clarity")
+                List.of("Apply Tiger Style principles: remove unnecessary complexity and focus on clarity"),
+                code // Return original code as fallback
         );
         return Response.ok(fallback).build();
     }

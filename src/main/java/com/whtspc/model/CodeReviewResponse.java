@@ -10,7 +10,8 @@ public record CodeReviewResponse(
         String explanation,
         List<String> issues,
         List<String> suggestions,
-        List<String> tigerStyle
+        List<String> tigerStyle,
+        String formattedCode
         ) {
 
     @JsonCreator
@@ -18,13 +19,15 @@ public record CodeReviewResponse(
             @JsonProperty("explanation") JsonNode explanation,
             @JsonProperty("issues") JsonNode issues,
             @JsonProperty("suggestions") JsonNode suggestions,
-            @JsonProperty("tigerStyle") JsonNode tigerStyle
+            @JsonProperty("tigerStyle") JsonNode tigerStyle,
+            @JsonProperty("formattedCode") JsonNode formattedCode
     ) {
         return new CodeReviewResponse(
                 parseStringOrArray(explanation),
                 parseArray(issues),
                 parseArray(suggestions),
-                parseArray(tigerStyle)
+                parseArray(tigerStyle),
+                parseStringOrArray(formattedCode)
         );
     }
 

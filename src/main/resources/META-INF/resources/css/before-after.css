@@ -1,0 +1,133 @@
+/* Before/After Code Comparison Styles */
+
+.before-after-container {
+    display: none;
+    margin-top: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.before-after-container.active {
+    display: block;
+}
+
+.before-after-header {
+    background: #f8fafc;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.before-after-title {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 0.9rem;
+}
+
+.before-after-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-small {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+}
+
+.btn-apply {
+    background: #10b981;
+    color: white;
+}
+
+.btn-apply:hover:not(:disabled) {
+    background: #059669;
+}
+
+.before-after-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 300px;
+}
+
+.code-panel {
+    position: relative;
+}
+
+.code-panel:first-child {
+    border-right: 1px solid #e2e8f0;
+}
+
+.code-panel-header {
+    background: #f1f5f9;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #475569;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.code-panel-header.before {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.code-panel-header.after {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.code-display {
+    padding: 1rem;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+    line-height: 1.4;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    min-height: 250px;
+}
+
+.code-display.before {
+    background: #1e1e1e;
+}
+
+.code-display.after {
+    background: #0d1117;
+}
+
+.improvement-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #10b981;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.improvement-badge.tiger-style {
+    background: #f59e0b;
+}
+
+.improvement-badge.quick-format {
+    background: #10b981;
+}
+
+@media (max-width: 768px) {
+    .before-after-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .code-panel:first-child {
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+    }
+}

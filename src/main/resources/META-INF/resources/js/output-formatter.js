@@ -1,6 +1,17 @@
 // Output Formatting Module
 
 class OutputFormatter {
+    static formatExplanation(content) {
+        if (!content) return '';
+
+        // Explanations should be plain text, not numbered lists
+        if (Array.isArray(content)) {
+            return content.join(' ');
+        }
+
+        return content;
+    }
+
     static formatContent(content) {
         if (!content) return '';
 
@@ -69,9 +80,17 @@ class OutputFormatter {
         window.currentAnalysis = result;
         exportBtn.style.display = 'block';
 
+        // Show before/after comparison if formatted code is available
+        if (result.formattedCode && window.codeFormatter) {
+            const originalCode = document.getElementById('codeInput').value;
+            if (originalCode.trim() !== result.formattedCode.trim()) {
+                window.codeFormatter.showComparison(originalCode, result.formattedCode, 'tiger');
+            }
+        }
+
         // Pre-process the content to ensure proper list formatting
         const processedResult = {
-            explanation: this.formatContent(result.explanation),
+            explanation: this.formatExplanation(result.explanation),
             issues: this.formatContent(result.issues),
             suggestions: this.formatContent(result.suggestions),
             tigerStyle: this.formatContent(result.tigerStyle)

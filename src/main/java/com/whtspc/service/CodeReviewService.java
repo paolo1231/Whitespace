@@ -22,7 +22,8 @@ public interface CodeReviewService {
         "explanation": "Clear explanation of what the code does in plain English",
         "issues": ["List each issue as a separate string in this array"],
         "suggestions": ["List each suggestion as a separate string in this array"],
-        "tigerStyle": ["List each Tiger Style recommendation as a separate string in this array"]
+        "tigerStyle": ["List each Tiger Style recommendation as a separate string in this array"],
+        "formattedCode": "Improved version of the code with proper formatting, Tiger Style principles applied, and simple fixes implemented. Keep the same functionality but improve structure, naming, and remove unnecessary complexity."
       }
 
       CRITICAL: Return ONLY valid JSON. Do not use markdown formatting or code blocks.

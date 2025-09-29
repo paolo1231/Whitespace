@@ -1,0 +1,238 @@
+/* Tiger Style Layout Improvements */
+
+/* Enhanced Main Layout */
+.main-content {
+    display: grid;
+    gap: 1.5rem;
+    min-height: 70vh;
+    transition: all 0.3s ease;
+}
+
+/* Responsive Grid System */
+.main-content.two-column {
+    grid-template-columns: 1fr 1fr;
+}
+
+.main-content.single-column {
+    grid-template-columns: 1fr;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.main-content.focus-mode {
+    grid-template-columns: 2fr 1fr;
+}
+
+/* Enhanced Section Styling */
+.input-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #e2e8f0;
+    position: relative;
+    overflow: visible;
+}
+
+.output-section {
+    background: linear-gradient(135deg, #fafafa 0%, #f1f5f9 100%);
+    border: 1px solid #e2e8f0;
+}
+
+/* Section Headers with Actions */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.section-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.layout-toggle {
+    background: none;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.layout-toggle:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.layout-toggle.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+/* Enhanced Code Editor */
+.code-input-container {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#codeInput {
+    border: none;
+    box-shadow: none;
+    transition: all 0.2s;
+}
+
+#codeInput:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Enhanced Output Section */
+#output {
+    border: none;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+/* Improved Before/After Comparison */
+.before-after-container {
+    margin-top: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.before-after-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* Adaptive Before/After Layout */
+.before-after-content.side-by-side {
+    grid-template-columns: 1fr 1fr;
+}
+
+.before-after-content.stacked {
+    grid-template-columns: 1fr;
+}
+
+.before-after-content.stacked .code-panel:first-child {
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Enhanced Code Panels */
+.code-panel {
+    transition: all 0.2s ease;
+}
+
+.code-panel:hover {
+    background: rgba(59, 130, 246, 0.02);
+}
+
+.code-display {
+    font-size: 13px;
+    line-height: 1.5;
+    border-radius: 0;
+}
+
+/* Status Indicators */
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-indicator.ready {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.status-indicator.analyzing {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.status-indicator.complete {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+    .main-content.two-column {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-content.focus-mode {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        gap: 1rem;
+    }
+    
+    .container {
+        padding: 1rem;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .before-after-content {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .code-panel:first-child {
+        border-right: none !important;
+        border-bottom: 1px solid #e2e8f0;
+    }
+}
+
+/* Focus Mode Enhancements */
+.main-content.focus-mode .input-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+.main-content.focus-mode .output-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+/* Animation for Layout Changes */
+.main-content * {
+    transition: all 0.3s ease;
+}
+
+/* Enhanced Button Styling */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 640px) {
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .file-input-wrapper {
+        width: 100%;
+    }
+}
