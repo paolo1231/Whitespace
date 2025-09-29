@@ -1,0 +1,96 @@
+/* Output Component Styles */
+
+#output {
+    min-height: 400px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    background: #fafafa;
+}
+
+.output-content h3 {
+    color: #1e293b;
+    margin: 1.5rem 0 0.5rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.output-content h3:first-child {
+    margin-top: 0;
+}
+
+.output-content p {
+    margin-bottom: 1rem;
+    white-space: pre-line;
+    line-height: 1.8;
+}
+
+.output-content ul,
+.output-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+}
+
+.output-content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.output-content ol {
+    list-style-type: decimal;
+}
+
+.output-content ul {
+    list-style-type: disc;
+}
+
+.output-content ol ol {
+    list-style-type: lower-alpha;
+    margin-top: 0.5rem;
+}
+
+.output-content ul ul {
+    list-style-type: circle;
+    margin-top: 0.5rem;
+}
+
+.output-content li p {
+    margin-bottom: 0.5rem;
+}
+
+.output-content li:last-child {
+    margin-bottom: 0;
+}
+
+.output-content code {
+    background: #f1f5f9;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.output-content pre {
+    background: #f1f5f9;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.tiger-style {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-left: 4px solid #f59e0b;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
