@@ -1,13 +1,13 @@
 // API Communication Module
 
 class CodeReviewAPI {
-    static async reviewCode(code, language) {
+    static async reviewCode(code, language, model = 'gpt-5-nano') {
         const response = await fetch('/review', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ code, language })
+            body: JSON.stringify({ code, language, model })
         });
 
         if (!response.ok) {

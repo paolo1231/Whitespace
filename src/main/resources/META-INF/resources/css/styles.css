@@ -57,18 +57,30 @@ body {
     color: #1e293b;
 }
 
-.language-selector {
+.selector-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
     margin-bottom: 1rem;
 }
 
-.language-selector label {
+.language-selector,
+.model-selector {
+    display: flex;
+    flex-direction: column;
+}
+
+.language-selector label,
+.model-selector label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
     color: #374151;
+    font-size: 0.9rem;
 }
 
-.language-selector select {
+.language-selector select,
+.model-selector select {
     width: 100%;
     padding: 0.75rem;
     border: 2px solid #e2e8f0;
@@ -78,9 +90,26 @@ body {
     transition: border-color 0.2s;
 }
 
-.language-selector select:focus {
+.language-selector select:focus,
+.model-selector select:focus {
     outline: none;
     border-color: #3b82f6;
+}
+
+.model-selector select {
+    border-color: #f59e0b;
+}
+
+.model-selector select:focus {
+    border-color: #d97706;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+@media (max-width: 640px) {
+    .selector-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
 }
 
 @media (max-width: 768px) {

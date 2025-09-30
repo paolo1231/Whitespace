@@ -65,7 +65,14 @@ class CodeFormatter {
 
         if (container && originalDisplay && formattedDisplay) {
             originalDisplay.textContent = originalCode;
-            formattedDisplay.textContent = formattedCode;
+            // Convert escaped newlines back to actual newlines for display
+            const unescapedCode = formattedCode
+                .replace(/\\n/g, '\n')
+                .replace(/\\r/g, '\r')
+                .replace(/\\t/g, '\t')
+                .replace(/\\"/g, '"')
+                .replace(/\\\\/g, '\\');
+            formattedDisplay.textContent = unescapedCode;
 
             // Update badge based on source
             if (badge) {
@@ -94,7 +101,14 @@ class CodeFormatter {
 
     applyFormattedCode() {
         if (this.formattedCode) {
-            this.codeInput.value = this.formattedCode;
+            // Convert escaped newlines back to actual newlines when applying
+            const unescapedCode = this.formattedCode
+                .replace(/\\n/g, '\n')
+                .replace(/\\r/g, '\r')
+                .replace(/\\t/g, '\t')
+                .replace(/\\"/g, '"')
+                .replace(/\\\\/g, '\\');
+            this.codeInput.value = unescapedCode;
             this.hideComparison();
 
             // Show success feedback

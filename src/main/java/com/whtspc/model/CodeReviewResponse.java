@@ -38,9 +38,6 @@ public record CodeReviewResponse(
         if (node.isTextual()) {
             return node.asText();
         }
-        if (node.isArray() && node.size() > 0) {
-            return node.get(0).asText();
-        }
         return node.toString();
     }
 

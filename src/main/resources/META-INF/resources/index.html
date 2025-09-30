@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="css/output.css">
     <link rel="stylesheet" href="css/before-after.css">
     <link rel="stylesheet" href="css/layout-improvements.css">
+    <link rel="stylesheet" href="css/model-selector.css">
 </head>
 
 <body>
@@ -32,18 +33,30 @@
         <div class="main-content">
             <div class="input-section">
                 <h2 class="section-title">Code Input</h2>
-                <div class="language-selector">
-                    <label for="languageSelect">Programming Language:</label>
-                    <select id="languageSelect">
-                        <option value="java">Java</option>
-                        <option value="python">Python</option>
-                        <option value="javascript">JavaScript</option>
-                        <option value="typescript">TypeScript</option>
-                        <option value="csharp">C#</option>
-                        <option value="go">Go</option>
-                        <option value="rust">Rust</option>
-                        <option value="cpp">C++</option>
-                    </select>
+                <div class="selector-row">
+                    <div class="language-selector">
+                        <label for="languageSelect">Programming Language:</label>
+                        <select id="languageSelect">
+                            <option value="java">Java</option>
+                            <option value="python">Python</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="typescript">TypeScript</option>
+                            <option value="csharp">C#</option>
+                            <option value="go">Go</option>
+                            <option value="rust">Rust</option>
+                            <option value="cpp">C++</option>
+                        </select>
+                    </div>
+                    <div class="model-selector">
+                        <label for="modelSelect">AI Model:</label>
+                        <select id="modelSelect">
+                            <option value="grok-code-fast-1">🚀 Grok Code Fast 1 (Alternative)</option>
+                            <option value="gpt-4o-mini">⚡ GPT-4o Mini (Recommended - Fast & Cheap)</option>
+                            <option value="gpt-3.5-turbo">💰 GPT-3.5 Turbo (Most Economical)</option>
+                            <!-- <option value="gpt-5-nano">🤖 GPT-5 Nano (Premium)</option> -->
+                            <option value="gpt-4.1-nano">🤖 GPT-4.1 Nano (Premium Quality)</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="code-input-container">
                     <textarea id="codeInput" placeholder="Paste your code here..."></textarea>

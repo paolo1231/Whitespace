@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.whtspc.model.CodeReviewRequest;
 import com.whtspc.model.CodeReviewResponse;
-import com.whtspc.service.CodeReviewService;
+import com.whtspc.service.DynamicCodeReviewService;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class CodeReviewResource {
     private static final String HEALTH_RESPONSE = "{\"status\": \"UP\", \"service\": \"Whitespace\"}";
 
     @Inject
-    CodeReviewService codeReviewService;
+    DynamicCodeReviewService dynamicCodeReviewService;
 
     @Inject
     ObjectMapper objectMapper;
@@ -34,7 +34,7 @@ public class CodeReviewResource {
                 return errorResponse(Response.Status.BAD_REQUEST, "Code field is required and cannot be empty");
             }
 
-            String aiResponse = codeReviewService.reviewCode(request.code(), request.language());
+            String aiResponse = dynamicCodeReviewService.reviewCode(request.code(), request.language(), request.model());
             Log.debug("AI Response: " + aiResponse);
 
             // Clean and parse the AI response
@@ -46,7 +46,7 @@ public class CodeReviewResource {
             Log.error("Failed to parse AI response: " + e.getMessage());
             return createFallbackResponse(request.code(), request.language());
         } catch (RuntimeException e) {
-            return errorResponse(Response.Status.INTERNAL_SERVER_ERROR, "Failed to process code review", e);
+            return errorResponse(Response.Status.INTERNAL_SERVER_ERROR, "Failed to process code review");
         }
     }
 
@@ -66,7 +66,35 @@ public class CodeReviewResource {
             cleaned = cleaned.substring(firstBrace, lastBrace + 1);
         }
 
+        // Fix common JSON formatting issues
+        cleaned = fixJsonFormatting(cleaned);
+
         return cleaned.trim();
+    }
+
+    private String fixJsonFormatting(String json) {
+        // Find and fix the formattedCode field specifically
+        int start = json.indexOf("\"formattedCode\":");
+        if (start == -1) {
+            return json;
+        }
+
+        int valueStart = json.indexOf("\"", start + 15) + 1;
+        int valueEnd = json.lastIndexOf("\"");
+
+        if (valueStart <= 0 || valueEnd <= valueStart) {
+            return json;
+        }
+
+        String codeValue = json.substring(valueStart, valueEnd);
+        String escapedCode = codeValue
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t");
+
+        return json.substring(0, valueStart) + escapedCode + json.substring(valueEnd);
     }
 
     private Response createFallbackResponse(String code, String language) {
@@ -88,12 +116,6 @@ public class CodeReviewResource {
     }
 
     private Response errorResponse(Response.Status status, String message) {
-        Log.debug("Error: " + message);
-        return Response.status(status).entity("{\"error\": \"" + message + "\"}").build();
-    }
-
-    private Response errorResponse(Response.Status status, String message, Exception e) {
-        Log.debug("Error: " + message, e);
         return Response.status(status).entity("{\"error\": \"" + message + "\"}").build();
     }
 }

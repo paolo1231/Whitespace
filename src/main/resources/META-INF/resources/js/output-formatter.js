@@ -76,7 +76,7 @@ class OutputFormatter {
     static displayResults(result) {
         const output = document.getElementById('output');
         const exportBtn = document.getElementById('exportBtn');
-        
+
         window.currentAnalysis = result;
         exportBtn.style.display = 'block';
 
@@ -113,17 +113,47 @@ ${processedResult.tigerStyle}
         let html = marked.parse(markdown);
 
         // Fallback: Convert inline numbered lists to proper HTML if markdown didn't catch them
-        html = html.replace(/<p>([^<]*\d+\.\s+[^<]*(?:\d+\.\s+[^<]*)*)<\/p>/g, function (match, content) {
-            // Split by numbered items and create proper list
-            const items = content.split(/(?=\d+\.\s+)/).filter(item => item.trim());
-            if (items.length > 1) {
-                const listItems = items.map(item => {
-                    const cleanItem = item.replace(/^\d+\.\s*/, '').trim();
-                    return `<li>${cleanItem}</li>`;
-                }).join('');
-                return `<ol>${listItems}</ol>`;
-            }
-            return match;
+        // But exclude the Code Explanation section
+        html = html.replace(/<h3>🐛 Issues Found<\/h3>([\s\S]*?)(?=<h3>|$)/g, function (match, content) {
+            return match.replace(/<p>([^<]*\d+\.\s+[^<]*(?:\d+\.\s+[^<]*)*)<\/p>/g, function (match, content) {
+                const items = content.split(/(?=\d+\.\s+)/).filter(item => item.trim());
+                if (items.length > 1) {
+                    const listItems = items.map(item => {
+                        const cleanItem = item.replace(/^\d+\.\s*/, '').trim();
+                        return `<li>${cleanItem}</li>`;
+                    }).join('');
+                    return `<ol>${listItems}</ol>`;
+                }
+                return match;
+            });
+        });
+
+        html = html.replace(/<h3>💡 Suggestions<\/h3>([\s\S]*?)(?=<h3>|$)/g, function (match, content) {
+            return match.replace(/<p>([^<]*\d+\.\s+[^<]*(?:\d+\.\s+[^<]*)*)<\/p>/g, function (match, content) {
+                const items = content.split(/(?=\d+\.\s+)/).filter(item => item.trim());
+                if (items.length > 1) {
+                    const listItems = items.map(item => {
+                        const cleanItem = item.replace(/^\d+\.\s*/, '').trim();
+                        return `<li>${cleanItem}</li>`;
+                    }).join('');
+                    return `<ol>${listItems}</ol>`;
+                }
+                return match;
+            });
+        });
+
+        html = html.replace(/<h3>🐅 Tiger Style Recommendations<\/h3>([\s\S]*?)(?=<h3>|$)/g, function (match, content) {
+            return match.replace(/<p>([^<]*\d+\.\s+[^<]*(?:\d+\.\s+[^<]*)*)<\/p>/g, function (match, content) {
+                const items = content.split(/(?=\d+\.\s+)/).filter(item => item.trim());
+                if (items.length > 1) {
+                    const listItems = items.map(item => {
+                        const cleanItem = item.replace(/^\d+\.\s*/, '').trim();
+                        return `<li>${cleanItem}</li>`;
+                    }).join('');
+                    return `<ol>${listItems}</ol>`;
+                }
+                return match;
+            });
         });
 
         // Add special styling for Tiger Style section
@@ -138,7 +168,7 @@ ${processedResult.tigerStyle}
     static clearOutput() {
         const output = document.getElementById('output');
         const exportBtn = document.getElementById('exportBtn');
-        
+
         output.innerHTML = '<p style="color: #64748b; text-align: center; margin-top: 2rem;">Enter code and click "Review Code" to see the analysis results here.</p>';
         exportBtn.style.display = 'none';
         window.currentAnalysis = null;

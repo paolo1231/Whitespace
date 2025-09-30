@@ -1,0 +1,122 @@
+/* Model Selector Enhancements */
+
+.model-selector {
+    position: relative;
+}
+
+.model-selector select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+.model-info {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #f59e0b;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    color: #374151;
+    z-index: 10;
+    display: none;
+}
+
+.model-info.show {
+    display: block;
+}
+
+.model-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+}
+
+.model-info-row:last-child {
+    margin-bottom: 0;
+}
+
+.model-info-label {
+    font-weight: 500;
+    color: #6b7280;
+}
+
+.model-info-value {
+    font-weight: 600;
+}
+
+.model-info-value.excellent {
+    color: #059669;
+}
+
+.model-info-value.very-good {
+    color: #0891b2;
+}
+
+.model-info-value.good {
+    color: #7c3aed;
+}
+
+.model-info-value.fast {
+    color: #dc2626;
+}
+
+.model-info-value.very-fast {
+    color: #ea580c;
+}
+
+.model-info-value.slow {
+    color: #6b7280;
+}
+
+/* Model Status Indicators */
+.model-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: 0.5rem;
+    font-size: 0.7rem;
+    padding: 0.125rem 0.375rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.model-status.available {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.model-status.requires-key {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.model-status.unavailable {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+/* Enhanced Select Styling */
+.model-selector select option {
+    padding: 0.5rem;
+}
+
+.model-selector select option:disabled {
+    color: #9ca3af;
+    background: #f9fafb;
+}
+
+/* Hover Effects */
+.model-selector:hover .model-info {
+    display: block;
+}
+
+.model-selector select:focus + .model-info {
+    display: block;
+}
