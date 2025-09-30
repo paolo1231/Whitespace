@@ -1,4 +1,4 @@
-package com.example.resource;
+package com.whtspc.resource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
