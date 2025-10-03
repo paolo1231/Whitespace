@@ -146,6 +146,44 @@ class WhitespaceApp {
     }
 }
 
+// Tiger Style Info Modal
+function showTigerStyleInfo() {
+    const modal = document.createElement('div');
+    modal.className = 'tiger-style-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🐅 Tiger Style Programming</h3>
+                <button class="modal-close" onclick="this.parentElement.parentElement.parentElement.remove()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Tiger Style</strong> is a programming philosophy from TigerBeetle that emphasizes:</p>
+                <ul>
+                    <li><strong>Negative Space Programming</strong> - The code you don't write is just as important</li>
+                    <li><strong>Simplicity Over Cleverness</strong> - Prefer simple, obvious solutions</li>
+                    <li><strong>Readability First</strong> - Code should be immediately understandable</li>
+                    <li><strong>Remove Rather Than Add</strong> - Always look for what can be eliminated</li>
+                    <li><strong>Fail Fast and Loud</strong> - Make errors obvious and immediate</li>
+                    <li><strong>Zero Tolerance for Complexity</strong> - Fight complexity at every level</li>
+                </ul>
+                <p>Like a tiger's stripes, the spaces and structure matter as much as the code itself.</p>
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+                    <a href="https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md" 
+                       target="_blank" style="color: #f59e0b; text-decoration: none; font-weight: 500;">
+                        📖 Read the full Tiger Style guide →
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+    });
+    
+    document.body.appendChild(modal);
+}
+
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new WhitespaceApp();

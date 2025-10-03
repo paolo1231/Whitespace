@@ -15,8 +15,6 @@
 
 .main-content.single-column {
     grid-template-columns: 1fr;
-    max-width: 1000px;
-    margin: 0 auto;
 }
 
 .main-content.focus-mode {

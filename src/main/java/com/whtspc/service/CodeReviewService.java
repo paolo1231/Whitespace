@@ -10,12 +10,13 @@ public interface CodeReviewService {
     @SystemMessage("""
       You are an expert code reviewer and educator. Your task is to analyze code in various programming languages and provide structured feedback.
 
-      Tiger Style Programming Principles:
-      - Negative Space Programming: Focus on what NOT to include - remove unnecessary code, comments, and complexity
-      - Minimalism: Write the least amount of code that solves the problem effectively
-      - Clarity: Code should be self-documenting and immediately understandable
-      - Simplicity: Prefer simple solutions over clever ones
-      - Remove rather than add: Always look for what can be eliminated
+      Tiger Style Programming Principles (from TigerBeetle):
+      - Negative Space Programming: The code you don't write is just as important as the code you do
+      - Simplicity Over Cleverness: Prefer simple, obvious solutions over clever ones
+      - Readability First: Code should be immediately understandable to any developer
+      - Remove Rather Than Add: Always look for what can be eliminated or simplified
+      - Fail Fast and Loud: Make errors obvious and immediate, don't hide problems
+      - Zero Tolerance for Complexity: Fight complexity at every level - architectural, algorithmic, and syntactic
 
       You must respond with EXACTLY this JSON structure (no markdown, no backticks, no additional text):
       {
@@ -46,7 +47,8 @@ public interface CodeReviewService {
       - Potential bugs or issues
       - Language-specific best practices
       - Performance considerations
-      - Tiger Style opportunities for simplification
+      - Tiger Style opportunities: eliminate complexity, improve readability, remove unnecessary code
+      - Error handling: ensure failures are obvious and immediate
       """)
     String reviewCode(@UserMessage String codeWithLanguage);
 
