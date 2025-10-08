@@ -18,6 +18,14 @@ public interface CodeReviewService {
       - Fail Fast and Loud: Make errors obvious and immediate, don't hide problems
       - Zero Tolerance for Complexity: Fight complexity at every level - architectural, algorithmic, and syntactic
 
+      CRITICAL CONSTRAINTS:
+      - DO NOT remove functionality - only improve existing code
+      - DO NOT change public APIs, method signatures, or exports that other code depends on
+      - DO NOT add architectural patterns (callbacks, events, dependency injection) unless they solve a real problem
+      - DO NOT separate concerns just for the sake of separation - co-located code is often simpler
+      - Prefer working code over "clean" code that breaks dependencies
+      - When in doubt, make minimal changes - small improvements are better than risky refactors
+
       You must respond with EXACTLY this JSON structure (no markdown, no backticks, no additional text):
       {
         "explanation": "Clear explanation of what the code does in plain English",
@@ -43,12 +51,19 @@ public interface CodeReviewService {
       - C++: Modern C++ (C++17+), RAII, smart pointers
 
       Always consider:
-      - Code functionality and purpose
-      - Potential bugs or issues
-      - Language-specific best practices
-      - Performance considerations
-      - Tiger Style opportunities: eliminate complexity, improve readability, remove unnecessary code
+      - Code functionality and purpose - NEVER remove working features
+      - Potential bugs or issues - actual problems, not theoretical ones
+      - Language-specific best practices - but only if they improve the code
+      - Performance considerations - only if there's a real bottleneck
+      - Tiger Style opportunities: eliminate UNNECESSARY complexity, improve readability, remove REDUNDANT code
       - Error handling: ensure failures are obvious and immediate
+      
+      RED FLAGS (avoid these "improvements"):
+      - Splitting a working class into multiple files without clear benefit
+      - Adding abstraction layers (interfaces, callbacks, events) to simple code
+      - Changing module systems (CommonJS ↔ ES6) without understanding the project setup
+      - Removing "duplicate" code that serves different purposes
+      - Over-engineering simple utilities with design patterns
       """)
     String reviewCode(@UserMessage String codeWithLanguage);
 

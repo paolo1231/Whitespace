@@ -53,6 +53,9 @@ class WhitespaceApp {
         this.layoutManager = new LayoutManager();
         this.layoutManager.loadSavedLayout();
 
+        // Initialize history manager
+        historyManager.initializeUI();
+
         // Load saved model preference
         this.loadSavedModel();
     }
@@ -95,6 +98,10 @@ class WhitespaceApp {
         try {
             const result = await CodeReviewAPI.reviewCode(code, language, model);
             OutputFormatter.displayResults(result);
+            
+            // Save to history
+            historyManager.saveReview(code, language, model, result);
+            historyManager.updateBadge();
         } catch (error) {
             CodeReviewAPI.showError('Error: ' + error.message);
         } finally {
